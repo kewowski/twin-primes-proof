@@ -17,7 +17,6 @@ jobs:
       - name: Install Lean toolchain
         uses: leanprover/lean-action@v1
         with:
-          toolchain: leanprover/lean4:stable
 
       - name: Run lake update
         run: lake update
