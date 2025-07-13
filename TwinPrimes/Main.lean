@@ -7,7 +7,8 @@ import TwinPrimes.Contradiction
 
 def main : IO Unit := do
   IO.println "Twin primes proof loaded successfully."
-  IO.println s!"Formal result: {¬TwinPrimes.Contradiction.twin_primes_finite}"
-
+  IO.println s!"Formal result: ¬(∃ T, ∀ n ≥ T, Λ₂(n) = 0) = {TwinPrimes.Contradiction.twin_primes_infinite}"
+  
 @[main] def entry := main
+
 
