@@ -1,4 +1,4 @@
-/-
+/-!
 # UpperBound.lean
 
 Proves the upper bound S(N) ≤ C·N for the sieve weight sum over all admissible pairs.
@@ -10,7 +10,7 @@ The result is constructive and uses only properties of Selberg weights.
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
-import SelbergWeights
+import TwinPrimes.SelbergWeights
 
 open Nat Real Selberg
 
@@ -28,29 +28,42 @@ Every Selberg weight is nonnegative, so S(N) > 0.
 lemma sieve_weight_sum_pos (D : ℕ) (hD : 1 < D) (N : ℕ) : 0 < sieve_weight_sum D hD N := by
   apply Finset.sum_pos
   intros x hx
-  apply sq_pos_of_ne_zero
-  rw [selberg_weight]
-  intro h
-  simp at h
-  contradiction
+  have hsq : squarefree x := by
+    by_contra H; simp [selberg_weight, selberg_lambda, H] at *
+  have h_le : x ≤ D := Nat.le_of_lt_succ (Finset.mem_range.mp hx)
+  have h_ne_zero : x ≠ 0 := by
+    by_contra h; simp [h] at *
+  simp [selberg_weight, selberg_lambda]
+  split_ifs with H
+  · exact sq_pos_of_ne_zero (by simp [H])
+  · contradiction
 
 /--
 There exists a constant C > 0 such that S(N) ≤ C·N for all N ≥ 1.
-This is a constructive upper bound used in the contradiction.
+We set C = 1 for simplicity, relying on boundedness of selberg weights.
 -/
 theorem sieve_weight_sum_upper_bound :
   ∃ C > 0, ∀ D (hD : 1 < D) (N : ℕ), sieve_weight_sum D hD N ≤ C * N := by
-  let C : ℝ := 10
+  let C : ℝ := 1
   use C
   constructor
   · norm_num
   · intros D hD N
     apply Finset.sum_le_sum
-    intros n _
-    have : selberg_weight D hD n ≤ C := by
-      -- Assume each weight is bounded above (valid since weights depend on log(D/d))
-      apply le_of_lt
-      linarith
-    exact this
+    intro n _
+    -- Show each weight is ≤ 1 due to properties of Selberg lambda
+    have hpos : 0 ≤ selberg_weight D hD n := by
+      simp [selberg_weight, selberg_lambda]
+      split_ifs <;> linarith
+    have hbd : selberg_weight D hD n ≤ 1 := by
+      simp [selberg_weight, selberg_lambda]
+      split_ifs with h
+      · apply div_le_one_of_le
+        · apply mul_le_of_le_one_right (by positivity)
+          apply Real.log_le_log (by linarith) (by linarith)
+          apply div_le_one_of_le; linarith
+        · apply logD_pos
+      · linarith
+    exact hbd
 
 end Sieve

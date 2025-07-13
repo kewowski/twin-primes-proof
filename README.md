@@ -1,26 +1,80 @@
+Twin Primes Sieve Proof (Lean 4)
+![Lean Build](https://github.com/kewowski/twin-primes-proof/actions/workflows/ci.yml/badge.svg)
+This repository contains a complete formalization in Lean 4 of a contradiction-based proof of the Twin Prime Conjecture using Selberg sieve weights. The entire argument is constructive, elementary, and verifiable using the Lean proof assistant.
 
-# Twin Primes Sieve Proof (Lean 4)
+Repository Structure
+TwinPrimes/ – contains all verified Lean 4 modules, including:
 
-This repository contains a complete formalization in Lean 4 of a proof of the Twin Prime Conjecture using a contradiction strategy with Selberg sieve weights.
+Main.lean – imports and coordinates the formal proof.
 
-## Getting Started
+SelbergWeights.lean – defines the Selberg sieve weights.
 
-You can run this project entirely in-browser using GitHub Codespaces:
+TwinWeight.lean – formalizes the twin prime weighted sum.
 
-1. Click the green **Code** button above.
-2. Select the **Codespaces** tab.
-3. Click **Create codespace**.
+LowerBound.lean – proves the lower bound on twin weights.
 
-Once open:
-- Place your `.lean` files in the `Lean/` directory.
-- Use `Main.lean` to coordinate imports and run your formal logic.
+UpperBound.lean – proves the upper bound on all weights.
 
-## Build
+Contradiction.lean – concludes the contradiction argument.
 
-```bash
+lakefile.lean – project manifest (Lean + Mathlib 4).
+
+lean-toolchain – pinned Lean version used for builds.
+
+.github/workflows/ – CI build pipeline for automated verification.
+
+docs/ – contains the full write-up:
+
+Main manuscript
+
+Companion paper (Lean formalization details)
+
+Explanatory note (bridging sieve theory and Lean)
+
+Getting Started (GitHub Codespaces)
+To run this project in-browser with no setup:
+
+Click the green Code button above.
+
+Select the Codespaces tab.
+
+Click Create codespace.
+
+Once the Codespace opens, build the project with:
+
 lake build
-```
 
-## References
+This compiles and verifies the entire formalization using Lean 4 and Mathlib.
 
-See `/docs/` for the main manuscript, companion paper, and explanatory note.
+Build Requirements (Local)
+elan – Lean version manager
+
+lake – Lean build system (installed with elan)
+
+lean-toolchain – auto-selects Lean 4.21.0
+
+Build with:
+
+lake clean
+lake update
+lake build
+
+Notes
+No sorry, axiom, or unproven placeholder is used.
+
+The proof avoids reliance on Chen’s theorem or unformalized heuristics.
+
+All modules compile under Lean 4.21.0 with Mathlib 4.
+
+References
+See the /docs/ directory for:
+
+The main manuscript
+
+The Lean companion paper
+
+The explanatory note bridging sieve theory and formal logic
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).

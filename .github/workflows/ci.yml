@@ -2,11 +2,9 @@ name: Build Lean Project
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   build:
@@ -16,12 +14,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Lean
+      - name: Install Lean toolchain
         uses: leanprover/lean-action@v1
         with:
-          toolchain: leanprover/lean4:v4.21.0
+          toolchain: leanprover/lean4:stable
 
-      - name: Build project with lake
-        run: |
-          lake update
-          lake build
+      - name: Run lake update
+        run: lake update
+
+      - name: Build project
+        run: lake build
