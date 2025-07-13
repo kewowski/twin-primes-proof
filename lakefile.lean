@@ -1,8 +1,8 @@
 import Lake
 open Lake DSL
 
-package twin_primes where
-  srcDir := "TwinPrimes"
+package twinPrimes where
+  -- optional: add additional configuration if needed
 
-require mathlib from git
-  "https://github.com/leanprover-community/mathlib4.git" @ "v4.21.0"
+lean_lib TwinPrimes where
+  srcDir := "TwinPrimes"
